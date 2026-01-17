@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  /* config optmodule.exports = {
+  allowedDevOrigins: ['local-origin.dev', '*.local-origin.dev'],
+}ions here */
   reactCompiler: true,
 };
 
