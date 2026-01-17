@@ -11,7 +11,7 @@ const features = [
     short: "Smart suggestions",
     detail: "ORENX uses AI to analyze your sales trends and inventory movement to suggest optimal reorder points and predict future demand.",
     link: "#demo",
-    color: "#134E4A", // teal-900
+    color: "#134E4A",
   },
   {
     icon: Activity,
@@ -19,7 +19,7 @@ const features = [
     short: "Live inventory",
     detail: "Track inventory across warehouses and stores in real-time with automatic updates for sales, purchases, and transfers.",
     link: "#tools",
-    color: "#0D9488", // teal-600
+    color: "#0D9488",
   },
   {
     icon: TrendingUp,
@@ -27,7 +27,7 @@ const features = [
     short: "Growth insights",
     detail: "Monitor sales performance with detailed analytics, identify trends, and make data-driven decisions.",
     link: "#about",
-    color: "#115E59", // teal-800
+    color: "#115E59",
   },
   {
     icon: AlertTriangle,
@@ -35,7 +35,7 @@ const features = [
     short: "Never run out",
     detail: "Get instant notifications when stock reaches minimum levels so you can reorder in time.",
     link: "#tools",
-    color: "#14B8A6", // teal-500
+    color: "#14B8A6",
   },
   {
     icon: BarChart3,
@@ -43,7 +43,7 @@ const features = [
     short: "Smart reports",
     detail: "Generate detailed stock, sales, profit, and performance reports with AI-powered insights.",
     link: "#demo",
-    color: "#0F2A1D", // brand dark green
+    color: "#0F2A1D",
     isCenter: true,
   },
   {
@@ -52,7 +52,7 @@ const features = [
     short: "Multi-user",
     detail: "Add team members with custom roles and permissions to manage different aspects of inventory.",
     link: "#pricing",
-    color: "#059669", // emerald-600
+    color: "#059669",
   },
   {
     icon: Shield,
@@ -60,7 +60,7 @@ const features = [
     short: "100% compliant",
     detail: "Stay fully compliant with GST regulations. Auto-generate GST invoices and file returns.",
     link: "#tools",
-    color: "#047857", // emerald-700
+    color: "#047857",
   },
   {
     icon: Zap,
@@ -68,7 +68,7 @@ const features = [
     short: "Lightning quick",
     detail: "Experience blazing fast performance even with thousands of products.",
     link: "#demo",
-    color: "#10B981", // emerald-500
+    color: "#10B981",
   },
   {
     icon: Settings,
@@ -76,7 +76,7 @@ const features = [
     short: "Quick start",
     detail: "Get started in minutes with our easy setup wizard. Import your existing data easily.",
     link: "#faq",
-    color: "#065F46", // emerald-800
+    color: "#065F46",
   },
 ];
 
@@ -89,7 +89,6 @@ export default function CoreFeatures() {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-[10%] left-[5%] w-[400px] h-[400px] bg-emerald-200/50 rounded-full blur-3xl" />
         <div className="absolute bottom-[10%] right-[5%] w-[350px] h-[350px] bg-teal-200/50 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-100/30 rounded-full blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-5xl px-6">
@@ -111,16 +110,68 @@ export default function CoreFeatures() {
 
         {/* Puzzle Grid - 3x3 */}
         <div className="relative max-w-3xl mx-auto">
-          <div className="grid grid-cols-3" style={{ gap: '0px' }}>
-            {features.map((feature, index) => (
-              <PuzzlePiece
-                key={index}
-                feature={feature}
-                index={index}
-                isOpen={openCard === index}
-                onClick={() => setOpenCard(openCard === index ? null : index)}
-              />
-            ))}
+          <div className="grid grid-cols-3 gap-2">
+            {features.map((feature, index) => {
+              const IconComponent = feature.icon;
+              return (
+                <div
+                  key={index}
+                  onClick={() => setOpenCard(openCard === index ? null : index)}
+                  className={`
+                    relative aspect-square cursor-pointer group
+                    rounded-2xl overflow-hidden
+                    transition-all duration-300 ease-out
+                    shadow-lg hover:shadow-2xl
+                    ${openCard === index ? 'scale-95 ring-4 ring-white' : 'hover:scale-105 hover:-translate-y-1'}
+                  `}
+                  style={{ backgroundColor: feature.color }}
+                >
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20" />
+                  
+                  {/* Puzzle notches - visual only */}
+                  {/* Top notch (if not first row) */}
+                  {index >= 3 && (
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full" 
+                      style={{ backgroundColor: features[index - 3]?.color || feature.color }} 
+                    />
+                  )}
+                  {/* Right notch (if not last column) */}
+                  {index % 3 !== 2 && (
+                    <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full"
+                      style={{ backgroundColor: feature.color }}
+                    />
+                  )}
+                  {/* Bottom hole (if not last row) */}
+                  {index < 6 && (
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-6 h-6 rounded-full bg-black/30" />
+                  )}
+                  {/* Left hole (if not first column) */}
+                  {index % 3 !== 0 && (
+                    <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/30" />
+                  )}
+
+                  {/* Content */}
+                  <div className="relative h-full flex flex-col items-center justify-center p-4 text-white z-10">
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-lg">
+                      <IconComponent size={24} className="md:w-7 md:h-7" />
+                    </div>
+                    <h3 className="text-sm md:text-base font-bold text-center leading-tight">
+                      {feature.title}
+                    </h3>
+                    <p className="text-xs text-center mt-1 text-white/70 hidden md:block">
+                      {feature.short}
+                    </p>
+                  </div>
+
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors" />
+                  
+                  {/* Border */}
+                  <div className="absolute inset-0 rounded-2xl border-2 border-white/10 group-hover:border-white/30 transition-colors" />
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -128,17 +179,10 @@ export default function CoreFeatures() {
         {openCard !== null && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setOpenCard(null)}>
             <div 
-              className="relative max-w-md w-full rounded-3xl p-8 shadow-2xl transform animate-[scale-in_0.3s_ease-out]"
+              className="relative max-w-md w-full rounded-3xl p-8 shadow-2xl"
               style={{ backgroundColor: features[openCard].color }}
               onClick={(e) => e.stopPropagation()}
             >
-              <style dangerouslySetInnerHTML={{ __html: `
-                @keyframes scale-in {
-                  from { opacity: 0; transform: scale(0.9); }
-                  to { opacity: 1; transform: scale(1); }
-                }
-              `}} />
-              
               <button 
                 onClick={() => setOpenCard(null)}
                 className="absolute top-4 right-4 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors"
@@ -186,173 +230,4 @@ export default function CoreFeatures() {
       </div>
     </section>
   );
-}
-
-interface FeatureType {
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  title: string;
-  short: string;
-  detail: string;
-  link: string;
-  color: string;
-  isCenter?: boolean;
-}
-
-function PuzzlePiece({ 
-  feature, 
-  index, 
-  isOpen,
-  onClick 
-}: { 
-  feature: FeatureType;
-  index: number;
-  isOpen: boolean;
-  onClick: () => void;
-}) {
-  const IconComponent = feature.icon;
-  const row = Math.floor(index / 3);
-  const col = index % 3;
-  
-  // Determine which sides have tabs (outward) or slots (inward)
-  const hasTopSlot = row > 0;
-  const hasRightTab = col < 2;
-  const hasBottomTab = row < 2;
-  const hasLeftSlot = col > 0;
-
-  const clipPathId = `puzzle-clip-${index}`;
-
-  return (
-    <div 
-      className={`
-        relative cursor-pointer group
-        transition-all duration-300
-        ${isOpen ? 'z-20 scale-105' : 'hover:z-10 hover:scale-102'}
-      `}
-      style={{ 
-        width: '100%',
-        aspectRatio: '1',
-        margin: '-2px',
-      }}
-      onClick={onClick}
-    >
-      <svg 
-        viewBox="0 0 100 100" 
-        className="w-full h-full drop-shadow-lg group-hover:drop-shadow-xl transition-all"
-        style={{ overflow: 'visible' }}
-      >
-        <defs>
-          <clipPath id={clipPathId}>
-            <path d={generatePuzzlePath(hasTopSlot, hasRightTab, hasBottomTab, hasLeftSlot)} />
-          </clipPath>
-          <linearGradient id={`grad-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="white" stopOpacity="0.3" />
-            <stop offset="50%" stopColor="white" stopOpacity="0" />
-            <stop offset="100%" stopColor="black" stopOpacity="0.2" />
-          </linearGradient>
-          <filter id={`shadow-${index}`} x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="2" dy="2" stdDeviation="3" floodOpacity="0.3"/>
-          </filter>
-        </defs>
-        
-        {/* Main puzzle piece */}
-        <g clipPath={`url(#${clipPathId})`} filter={`url(#shadow-${index})`}>
-          {/* Background color */}
-          <rect x="-20" y="-20" width="140" height="140" fill={feature.color} />
-          
-          {/* Gradient overlay for 3D effect */}
-          <rect x="-20" y="-20" width="140" height="140" fill={`url(#grad-${index})`} />
-          
-          {/* Inner border highlight */}
-          <path 
-            d={generatePuzzlePath(hasTopSlot, hasRightTab, hasBottomTab, hasLeftSlot)} 
-            fill="none" 
-            stroke="white" 
-            strokeWidth="1"
-            strokeOpacity="0.3"
-          />
-        </g>
-        
-        {/* Outline */}
-        <path 
-          d={generatePuzzlePath(hasTopSlot, hasRightTab, hasBottomTab, hasLeftSlot)} 
-          fill="none" 
-          stroke="rgba(0,0,0,0.2)" 
-          strokeWidth="0.5"
-        />
-      </svg>
-
-      {/* Content overlay */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center p-2 md:p-4 text-white pointer-events-none">
-        <div className={`
-          w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center mb-1 md:mb-2 
-          bg-white/20 shadow-lg backdrop-blur-sm
-          group-hover:scale-110 transition-transform
-        `}>
-          <IconComponent size={20} className="md:w-6 md:h-6" />
-        </div>
-        <h3 className="text-[10px] md:text-sm font-bold text-center leading-tight drop-shadow-md">
-          {feature.title}
-        </h3>
-        <p className="text-[8px] md:text-xs text-center mt-0.5 text-white/70 hidden md:block">
-          {feature.short}
-        </p>
-      </div>
-
-      {/* Hover effect */}
-      <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors pointer-events-none" 
-        style={{ clipPath: `url(#${clipPathId})` }}
-      />
-    </div>
-  );
-}
-
-function generatePuzzlePath(hasTopSlot: boolean, hasRightTab: boolean, hasBottomTab: boolean, hasLeftSlot: boolean): string {
-  const size = 100;
-  const tabSize = 15;
-  const tabWidth = 20;
-  
-  let path = '';
-  
-  // Start at top-left
-  path += `M 0 0 `;
-  
-  // Top edge
-  if (hasTopSlot) {
-    path += `L ${(size - tabWidth) / 2} 0 `;
-    path += `C ${(size - tabWidth) / 2} ${tabSize}, ${(size + tabWidth) / 2} ${tabSize}, ${(size + tabWidth) / 2} 0 `;
-    path += `L ${size} 0 `;
-  } else {
-    path += `L ${size} 0 `;
-  }
-  
-  // Right edge
-  if (hasRightTab) {
-    path += `L ${size} ${(size - tabWidth) / 2} `;
-    path += `C ${size + tabSize} ${(size - tabWidth) / 2}, ${size + tabSize} ${(size + tabWidth) / 2}, ${size} ${(size + tabWidth) / 2} `;
-    path += `L ${size} ${size} `;
-  } else {
-    path += `L ${size} ${size} `;
-  }
-  
-  // Bottom edge
-  if (hasBottomTab) {
-    path += `L ${(size + tabWidth) / 2} ${size} `;
-    path += `C ${(size + tabWidth) / 2} ${size + tabSize}, ${(size - tabWidth) / 2} ${size + tabSize}, ${(size - tabWidth) / 2} ${size} `;
-    path += `L 0 ${size} `;
-  } else {
-    path += `L 0 ${size} `;
-  }
-  
-  // Left edge
-  if (hasLeftSlot) {
-    path += `L 0 ${(size + tabWidth) / 2} `;
-    path += `C ${tabSize} ${(size + tabWidth) / 2}, ${tabSize} ${(size - tabWidth) / 2}, 0 ${(size - tabWidth) / 2} `;
-    path += `L 0 0 `;
-  } else {
-    path += `L 0 0 `;
-  }
-  
-  path += 'Z';
-  
-  return path;
 }
