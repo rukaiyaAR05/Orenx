@@ -80,6 +80,55 @@ const features = [
   },
 ];
 
+// Generate puzzle clip path based on position
+function getPuzzleClipPath(row: number, col: number): string {
+  const hasTop = row > 0;
+  const hasRight = col < 2;
+  const hasBottom = row < 2;
+  const hasLeft = col > 0;
+  
+  // Base percentages
+  const tabSize = 12; // percentage
+  const tabPos = 50; // center position
+  
+  let path = '';
+  
+  // Start top-left, go clockwise
+  // Top edge
+  if (hasTop) {
+    // Has indent on top
+    path += `0% 0%, ${tabPos - tabSize}% 0%, ${tabPos - tabSize/2}% ${tabSize}%, ${tabPos + tabSize/2}% ${tabSize}%, ${tabPos + tabSize}% 0%, 100% 0%`;
+  } else {
+    path += `0% 0%, 100% 0%`;
+  }
+  
+  // Right edge
+  if (hasRight) {
+    // Has tab on right
+    path += `, 100% ${tabPos - tabSize}%, ${100 + tabSize}% ${tabPos - tabSize/2}%, ${100 + tabSize}% ${tabPos + tabSize/2}%, 100% ${tabPos + tabSize}%, 100% 100%`;
+  } else {
+    path += `, 100% 100%`;
+  }
+  
+  // Bottom edge
+  if (hasBottom) {
+    // Has tab on bottom
+    path += `, ${tabPos + tabSize}% 100%, ${tabPos + tabSize/2}% ${100 + tabSize}%, ${tabPos - tabSize/2}% ${100 + tabSize}%, ${tabPos - tabSize}% 100%, 0% 100%`;
+  } else {
+    path += `, 0% 100%`;
+  }
+  
+  // Left edge
+  if (hasLeft) {
+    // Has indent on left
+    path += `, 0% ${tabPos + tabSize}%, ${-tabSize}% ${tabPos + tabSize/2}%, ${-tabSize}% ${tabPos - tabSize/2}%, 0% ${tabPos - tabSize}%, 0% 0%`;
+  } else {
+    path += `, 0% 0%`;
+  }
+  
+  return `polygon(${path})`;
+}
+
 export default function CoreFeatures() {
   const [openCard, setOpenCard] = useState<number | null>(null);
 
@@ -108,78 +157,82 @@ export default function CoreFeatures() {
           </p>
         </div>
 
-        {/* Puzzle Grid - 3x3 */}
-        <div className="relative max-w-3xl mx-auto">
-          <div className="grid grid-cols-3 gap-2">
+        {/* Puzzle Grid - 3x3 with SVG */}
+        <div className="relative max-w-2xl mx-auto">
+          <svg viewBox="0 0 330 330" className="w-full h-auto">
+            <defs>
+              {/* Define puzzle piece paths */}
+              {features.map((_, index) => {
+                const row = Math.floor(index / 3);
+                const col = index % 3;
+                return (
+                  <clipPath key={`clip-${index}`} id={`puzzleClip${index}`}>
+                    <path d={generatePuzzleSVGPath(row, col)} />
+                  </clipPath>
+                );
+              })}
+              
+              {/* Gradient for 3D effect */}
+              <linearGradient id="shineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="white" stopOpacity="0.3" />
+                <stop offset="50%" stopColor="white" stopOpacity="0" />
+                <stop offset="100%" stopColor="black" stopOpacity="0.15" />
+              </linearGradient>
+            </defs>
+
             {features.map((feature, index) => {
+              const row = Math.floor(index / 3);
+              const col = index % 3;
+              const x = col * 110;
+              const y = row * 110;
               const IconComponent = feature.icon;
+
               return (
-                <div
-                  key={index}
+                <g 
+                  key={index} 
+                  className="cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
+                  style={{ transformOrigin: `${x + 55}px ${y + 55}px` }}
                   onClick={() => setOpenCard(openCard === index ? null : index)}
-                  className={`
-                    relative aspect-square cursor-pointer group
-                    rounded-2xl overflow-hidden
-                    transition-all duration-300 ease-out
-                    shadow-lg hover:shadow-2xl
-                    ${openCard === index ? 'scale-95 ring-4 ring-white' : 'hover:scale-105 hover:-translate-y-1'}
-                  `}
-                  style={{ backgroundColor: feature.color }}
                 >
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20" />
-                  
-                  {/* Puzzle notches - visual only */}
-                  {/* Top notch (if not first row) */}
-                  {index >= 3 && (
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full" 
-                      style={{ backgroundColor: features[index - 3]?.color || feature.color }} 
-                    />
-                  )}
-                  {/* Right notch (if not last column) */}
-                  {index % 3 !== 2 && (
-                    <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full"
-                      style={{ backgroundColor: feature.color }}
-                    />
-                  )}
-                  {/* Bottom hole (if not last row) */}
-                  {index < 6 && (
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-6 h-6 rounded-full bg-black/30" />
-                  )}
-                  {/* Left hole (if not first column) */}
-                  {index % 3 !== 0 && (
-                    <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/30" />
-                  )}
-
-                  {/* Content */}
-                  <div className="relative h-full flex flex-col items-center justify-center p-4 text-white z-10">
-                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-lg">
-                      <IconComponent size={24} className="md:w-7 md:h-7" />
-                    </div>
-                    <h3 className="text-sm md:text-base font-bold text-center leading-tight">
-                      {feature.title}
-                    </h3>
-                    <p className="text-xs text-center mt-1 text-white/70 hidden md:block">
-                      {feature.short}
-                    </p>
-                  </div>
-
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors" />
+                  {/* Main piece */}
+                  <g clipPath={`url(#puzzleClip${index})`} transform={`translate(${x}, ${y})`}>
+                    {/* Background */}
+                    <rect x="-20" y="-20" width="150" height="150" fill={feature.color} />
+                    {/* Shine overlay */}
+                    <rect x="-20" y="-20" width="150" height="150" fill="url(#shineGrad)" />
+                  </g>
                   
                   {/* Border */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/10 group-hover:border-white/30 transition-colors" />
-                </div>
+                  <path 
+                    d={generatePuzzleSVGPath(row, col)} 
+                    transform={`translate(${x}, ${y})`}
+                    fill="none" 
+                    stroke="rgba(255,255,255,0.3)" 
+                    strokeWidth="2"
+                  />
+                  
+                  {/* Icon and text */}
+                  <foreignObject x={x + 15} y={y + 15} width="80" height="80">
+                    <div className="w-full h-full flex flex-col items-center justify-center text-white">
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-white/20 flex items-center justify-center mb-1">
+                        <IconComponent size={20} />
+                      </div>
+                      <span className="text-[10px] md:text-xs font-bold text-center leading-tight px-1">
+                        {feature.title}
+                      </span>
+                    </div>
+                  </foreignObject>
+                </g>
               );
             })}
-          </div>
+          </svg>
         </div>
 
         {/* Detail Modal */}
         {openCard !== null && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setOpenCard(null)}>
             <div 
-              className="relative max-w-md w-full rounded-3xl p-8 shadow-2xl"
+              className="relative max-w-md w-full rounded-3xl p-8 shadow-2xl animate-in zoom-in-95 duration-200"
               style={{ backgroundColor: features[openCard].color }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -230,4 +283,56 @@ export default function CoreFeatures() {
       </div>
     </section>
   );
+}
+
+// Generate SVG path for puzzle piece
+function generatePuzzleSVGPath(row: number, col: number): string {
+  const size = 110;
+  const tabSize = 15;
+  const tabWidth = 22;
+  const tabCenter = size / 2;
+  
+  const hasTopSlot = row > 0;
+  const hasRightTab = col < 2;
+  const hasBottomTab = row < 2;
+  const hasLeftSlot = col > 0;
+  
+  let d = '';
+  
+  // Start at top-left
+  d += `M 0 0 `;
+  
+  // Top edge
+  if (hasTopSlot) {
+    d += `L ${tabCenter - tabWidth/2} 0 `;
+    d += `Q ${tabCenter - tabWidth/2} ${tabSize}, ${tabCenter} ${tabSize} `;
+    d += `Q ${tabCenter + tabWidth/2} ${tabSize}, ${tabCenter + tabWidth/2} 0 `;
+  }
+  d += `L ${size} 0 `;
+  
+  // Right edge
+  if (hasRightTab) {
+    d += `L ${size} ${tabCenter - tabWidth/2} `;
+    d += `Q ${size + tabSize} ${tabCenter - tabWidth/2}, ${size + tabSize} ${tabCenter} `;
+    d += `Q ${size + tabSize} ${tabCenter + tabWidth/2}, ${size} ${tabCenter + tabWidth/2} `;
+  }
+  d += `L ${size} ${size} `;
+  
+  // Bottom edge
+  if (hasBottomTab) {
+    d += `L ${tabCenter + tabWidth/2} ${size} `;
+    d += `Q ${tabCenter + tabWidth/2} ${size + tabSize}, ${tabCenter} ${size + tabSize} `;
+    d += `Q ${tabCenter - tabWidth/2} ${size + tabSize}, ${tabCenter - tabWidth/2} ${size} `;
+  }
+  d += `L 0 ${size} `;
+  
+  // Left edge
+  if (hasLeftSlot) {
+    d += `L 0 ${tabCenter + tabWidth/2} `;
+    d += `Q ${tabSize} ${tabCenter + tabWidth/2}, ${tabSize} ${tabCenter} `;
+    d += `Q ${tabSize} ${tabCenter - tabWidth/2}, 0 ${tabCenter - tabWidth/2} `;
+  }
+  d += `L 0 0 Z`;
+  
+  return d;
 }
