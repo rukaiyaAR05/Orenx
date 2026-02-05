@@ -10,7 +10,7 @@ const features = [
     title: "AI Assistance",
     short: "Smart suggestions",
     detail: "ORENX uses AI to analyze your sales trends and inventory movement to suggest optimal reorder points and predict future demand.",
-    link: "#demo",
+    link: "/features/ai-assistance",
     color: "#134E4A",
   },
   {
@@ -18,7 +18,7 @@ const features = [
     title: "Real-Time Tracking",
     short: "Live inventory",
     detail: "Track inventory across warehouses and stores in real-time with automatic updates for sales, purchases, and transfers.",
-    link: "#tools",
+    link: "/features/tracking",
     color: "#0D9488",
   },
   {
@@ -26,7 +26,7 @@ const features = [
     title: "Sales Analytics",
     short: "Growth insights",
     detail: "Monitor sales performance with detailed analytics, identify trends, and make data-driven decisions.",
-    link: "#about",
+    link: "/features/analytics",
     color: "#115E59",
   },
   {
@@ -34,7 +34,7 @@ const features = [
     title: "Low Stock Alerts",
     short: "Never run out",
     detail: "Get instant notifications when stock reaches minimum levels so you can reorder in time.",
-    link: "#tools",
+    link: "/features/alerts",
     color: "#14B8A6",
   },
   {
@@ -42,7 +42,7 @@ const features = [
     title: "Reports",
     short: "Smart reports",
     detail: "Generate detailed stock, sales, profit, and performance reports with AI-powered insights.",
-    link: "#demo",
+    link: "/features/reports",
     color: "#0F2A1D",
     isCenter: true,
   },
@@ -51,7 +51,7 @@ const features = [
     title: "Team Access",
     short: "Multi-user",
     detail: "Add team members with custom roles and permissions to manage different aspects of inventory.",
-    link: "#pricing",
+    link: "/features/team",
     color: "#059669",
   },
   {
@@ -59,7 +59,7 @@ const features = [
     title: "GST Compliant",
     short: "100% compliant",
     detail: "Stay fully compliant with GST regulations. Auto-generate GST invoices and file returns.",
-    link: "#tools",
+    link: "/features/gst",
     color: "#047857",
   },
   {
@@ -67,7 +67,7 @@ const features = [
     title: "Fast Performance",
     short: "Lightning quick",
     detail: "Experience blazing fast performance even with thousands of products.",
-    link: "#demo",
+    link: "/features/performance",
     color: "#10B981",
   },
   {
@@ -75,7 +75,7 @@ const features = [
     title: "Easy Setup",
     short: "Quick start",
     detail: "Get started in minutes with our easy setup wizard. Import your existing data easily.",
-    link: "#faq",
+    link: "/features/setup",
     color: "#065F46",
   },
 ];
