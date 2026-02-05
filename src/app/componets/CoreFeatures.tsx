@@ -261,7 +261,7 @@ export default function CoreFeatures() {
               <Link 
                 href={features[openCard].link}
                 onClick={() => setOpenCard(null)}
-                className="mt-6 w-full bg-white text-[#0F2A1D] py-3 rounded-xl font-semibold hover:bg-white/90 transition-colors flex items-center justify-center gap-2 group"
+                className="mt-6 w-full bg-[#4ADE80] text-white py-3 rounded-xl font-semibold hover:bg-[#22C55E] transition-colors flex items-center justify-center gap-2 group"
               >
                 Learn More
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
@@ -274,7 +274,7 @@ export default function CoreFeatures() {
         <div className="mt-16 text-center">
           <Link 
             href="#pricing"
-            className="group bg-[#0F2A1D] text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-emerald-900/20 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 inline-flex items-center gap-2"
+            className="group bg-[#4ADE80] text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-green-900/20 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 inline-flex items-center gap-2"
           >
             Start Free Trial
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />

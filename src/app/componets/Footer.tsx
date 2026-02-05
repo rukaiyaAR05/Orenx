@@ -83,7 +83,7 @@ export default function Footer() {
               <div className="space-y-3">
                 <a href="mailto:hello@orenx.com" className="flex items-center gap-3 text-slate-400 hover:text-emerald-400 transition-colors text-sm">
                   <Mail size={16} className="text-emerald-500" />
-                  hello@orenx.com
+                  ram@orenx.in
                 </a>
                 <a href="tel:+919876543210" className="flex items-center gap-3 text-slate-400 hover:text-emerald-400 transition-colors text-sm">
                   <Phone size={16} className="text-emerald-500" />
@@ -91,7 +91,7 @@ export default function Footer() {
                 </a>
                 <div className="flex items-start gap-3 text-slate-400 text-sm">
                   <MapPin size={16} className="text-emerald-500 flex-shrink-0 mt-0.5" />
-                  <span>Bangalore, Karnataka, India</span>
+                  <span>Jamnagar, Gujarat, India</span>
                 </div>
               </div>
             </div>
